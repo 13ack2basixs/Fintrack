@@ -1,0 +1,123 @@
+{% extends "fintrack/home.html" %}
+{% load static %}
+
+{% block body %}
+  <div class="container">
+    <div class="transaction-form">
+      <h4>Add Transaction</h4>
+      <form action="{% url 'transactions' %}" method="POST">
+        {% csrf_token %}
+
+        <div class="error-placeholder">
+          {% if messages %}
+          {% for message in messages %}
+          <div class="alert alert-danger">
+            {{ message }}
+          </div>
+          {% endfor %}
+          {% else %}
+
+          <!-- Empty container to reserve space -->
+          <div class="alert alert-danger" style="visibility: hidden;">Placeholder</div>
+          {% endif %}
+        </div>
+
+        <div class="form-row">
+          <div class="form-group col-md-2">
+            <label for="inputType">Type</label>
+            <select name="type" class="form-control">
+              <option selected>Choose...</option>
+              <option>Income</option>
+              <option>Expense</option>
+            </select>
+          </div>
+          <div class="form-group col-md-4">
+            <label for="inputDescription">Description</label>
+            <input type="text" class="form-control" name="description">
+          </div>
+          <div class="form-group col-md-2">
+            <label for="inputAmount">Amount</label>
+            <input class="form-control" name="amount">
+          </div>
+          <div class="form-group col-md-2">
+            <label for="inputCurrency">Currency</label>
+            <select name="currency" class="form-control">
+              <option selected>Choose...</option>
+              {% for currency in currencies %}
+              <option value="{{ currency.symbol }}">{{ currency.symbol }}</option>
+              {% endfor %}
+            </select>
+          </div>
+          <div class="form-group col-md-2">
+            <label for="inputCategory">Category</label>
+            <select name="category" class="form-control">
+              <option selected>Choose...</option>
+              {% for category in categories %}
+                <option value="{{ category }}">{{ category }}</option>
+              {% endfor %}
+            </select>
+          </div>
+        </div>
+        <button type="submit" class="btn btn-primary">Add Transaction</button>
+      </form>
+    </div>
+
+    <br>
+
+    <!-- Transaction History and Summary -->
+    <div class="transaction-history">
+      <h4>Transaction History</h4>
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th scope="col">Date</th>
+            <th scope="col">Description</th>
+            <th scope="col">Amount</th>
+            <th scope="col">Type</th>
+            <th scope="col">Currency</th>
+            <th scope="col">Category</th>
+            <th scope="col">Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for transaction in transactions %}
+            <tr>
+              <td>{{ transaction.date }}</td>
+              <td>{{ transaction.description }}</td>
+              <td>{{ transaction.amount }}</td>
+              <td>{{ transaction.type }}</td>
+              <td>{{ transaction.currency }}</td>
+              <td>{{ transaction.category }}</td>
+              <td>
+                <form action="{% url 'delete_transaction' transaction.id %}" method="POST" style="display:inline;">
+                  {% csrf_token %}
+                  <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                </form>
+              </td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Financial Summary -->
+    <div class="row mt-5">
+      <div class="col-md-6">
+        <div class="card dashboard-card">
+          <div class="card-body">
+            <h5 class="card-title">Total Income</h5>
+            <p class="card-text">{{ total_income }}</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="card dashboard-card">
+          <div class="card-body">
+            <h5 class="card-title">Total Expenses</h5>
+            <p class="card-text">{{ total_expenses }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}

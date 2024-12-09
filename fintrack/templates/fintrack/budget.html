@@ -1,0 +1,86 @@
+{% extends "fintrack/home.html" %}
+{% load static %}
+
+{% block body %}
+<div class="container">
+    <div class="budget-form">
+        <h4>Add Budget</h4>
+        <form action="{% url 'budget' %}" method="POST">
+            {% csrf_token %}
+
+            <div class="error-placeholder">
+                {% if messages %}
+                {% for message in messages %}
+                <div class="alert alert-danger">
+                    {{ message }}
+                </div>
+                {% endfor %}
+                {% else %}
+            
+                <!-- Empty container to reserve space -->
+                <div class="alert alert-danger" style="visibility: hidden;">Placeholder</div>
+                {% endif %}
+            </div>
+
+            <div class="form-row justify-content-center">
+                <div class="form-group col-md-2">
+                    <label for="inputAmount">Amount</label>
+                    <input class="form-control" name="amount">
+                </div>
+                <div class="form-group col-md-2">
+                    <label for="inputCategory">Category</label>
+                    <select name="category" class="form-control">
+                        <option selected>Choose...</option>
+                        {% for category in categories %}
+                        <option value="{{ category }}">{{ category }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="form-group col-md-2">
+                    <label for="startDate">Select Start Date</label>
+                    <input type="date" class="form-control" name="startdate">
+                </div>
+                <div class="form-group col-md-2">
+                    <label for="endDate">Select End Date</label>
+                    <input type="date" class="form-control" name="enddate">
+                </div>
+            </div>
+            <button type="submit" class="btn btn-primary">Add Budget</button>
+        </form>
+    </div>
+
+    <br>
+
+    <!-- Existing Budgets -->
+    <div class="existing-budgets">
+        <h4>Existing Budgets</h4>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th scope="col">Start Date</th>
+                    <th scope="col">End Date</th>
+                    <th scope="col">Category</th>
+                    <th scope="col">Amount</th>
+                    <th scope="col">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for budget in budgets %}
+                <tr>
+                    <td>{{ budget.start_date }}</td>
+                    <td>{{ budget.end_date }}</td>
+                    <td>{{ budget.category }}</td>
+                    <td>{{ budget.amount }}</td>
+                    <td>
+                        <form action="{% url 'delete_budget' budget.id %}" method="POST" style="display:inline;">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,37 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Fintrack</title>
+        <link rel="stylesheet" href="{% static 'fintrack/home.css' %}">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+        <link href="https://fonts.googleapis.com/css2?family=Charter&display=swap" rel="stylesheet">
+        
+    </head>
+    <body>
+        <header class="header-container">
+            <a class="logo" href="{% url 'home' %}">Fintrack</a>
+            <div class="welcome-message">Welcome {{ user.username }}!</div>
+            <nav class="navbar">
+                <a class="btn btn-light" href="{% url 'dashboard' %}">Dashboard</a>
+                <a class="btn btn-light" href="{% url 'transactions' %}">Transactions</a>
+                <a class="btn btn-light" href="{% url 'budget' %}">Budget</a>
+                <a class="btn btn-light" href="{% url 'bills' %}">Bills</a>
+                <a class="btn btn-light" href="#">Investments</a>
+                <a class="btn btn-light" href="{% url 'logout' %}">Logout</a>
+            </nav>
+        </header>
+        
+        <div>
+            {% block body %}
+            {% endblock %}
+        </div>
+
+        {% block extra_js %}
+        {% endblock %}
+    </body>
+</html>
+

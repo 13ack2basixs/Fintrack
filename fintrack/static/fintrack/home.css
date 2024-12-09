@@ -1,0 +1,249 @@
+/* home.css */
+
+html, body {
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding-top: 40px;
+    color: #000;
+}
+
+header {
+    background: #000;
+    padding: 0;
+}
+
+.header-container {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 1000;
+    padding: 10px 20px;
+    height: 80px;
+    background: #000;
+}
+
+.header-container .logo {
+    font-size: 1.5rem;
+    color: #fff;
+    font-family: 'Charter', serif;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+.header-container .welcome-message {
+    font-size: 1.5rem;
+    color: #fff;
+    font-family: serif;
+    font-weight: normal;
+}
+
+.navbar {
+    display: flex;
+    gap: 1rem;
+}
+
+.navbar .btn {
+    color: #000;
+    background: #fff;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.navbar .btn:hover {
+    background: #ddd;
+}
+
+.budget-form {
+    margin-top: 30px;
+    background: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.existing-budgets {
+    margin-top: 30px;
+    background: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.transaction-form {
+    margin-top: 30px;
+    background: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.transaction-history {
+    margin-top: 30px;
+    background: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.dashboard-card {
+    margin-bottom: 20px;
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.dashboard-card .card-body {
+    text-align: center;
+}
+
+.dashboard-card .card-title {
+    font-size: 1.25rem;
+    font-weight: bold;
+}
+
+.dashboard-card .card-text {
+    font-size: 1.5rem;
+    color: #4e54c8;
+}
+
+.upcoming-bills .existing-budgets {
+    font-size: 20px;
+}
+
+.balance-red {
+    color: red;
+}
+
+.balance-green {
+    color: green;
+}
+
+.pie {
+    width: 300px;
+    height: 150px;
+    border: 2px solid #ccc;
+    border-radius: 8px;
+    margin: 10px auto;
+}
+
+.overview-cards {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    align-items: center;
+}
+
+.row1,
+.row2 {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+}
+
+.row1 .card,
+.row2 .card {
+    flex: none;
+    width: 300px;
+    text-align: center;
+    padding: 20px;
+    border-radius: 10px;
+    background-color: #fff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.row2 {
+    margin-top: 20px;
+}
+
+.piechart-card {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.piechart-card .charts-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    align-items: center;
+    gap: 20px;
+}
+
+.piechart-card .charts-container canvas {
+    width: 300px;
+    height: 300px;
+}
+
+.card {
+    flex: 1;
+    max-width: 500px;
+    margin: 0 auto;
+    text-align: center;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.card h3 {
+    font-size: 1.5rem;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.card p {
+    font-size: 2rem;
+    font-weight: bold;
+}
+
+.card ul progress {
+    display: block;
+    margin-bottom: 30px;
+}
+
+.budget-list li {
+    font-size: 16px;
+    color: inherit;
+}
+
+.budget-list li .progress-bar {
+    background-color: lightgray;
+}
+
+.progress-bar.progress-over-budget::-webkit-progress-value {
+    background-color: red;
+}
+
+.budget-list li.progress-over-budget {
+    color: red;
+    font-weight: bold;
+}
+
+.chart-controls {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 10px;
+}
+
+.toggle-btn {
+    margin: 0 5px;
+    padding: 5px 10px;
+    background-color: #4caf50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.toggle-btn:hover {
+    background-color: #45a049;
+}

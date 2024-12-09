@@ -1,0 +1,115 @@
+{% extends "fintrack/home.html" %}
+{% load static %}
+
+{% block body %}
+<div class="container">
+    <div class="bills-form"> 
+        <h4>Add Transaction</h4>
+        <form action="{% url 'bills' %}" method="POST">
+            {% csrf_token %}
+
+            <div class="error-placeholder">
+                {% if messages %}
+                {% for message in messages %}
+                <div class="alert alert-danger">
+                    {{ message }}
+                </div>
+                {% endfor %}
+                {% else %}
+
+                <!-- Empty container to reserve space -->
+                <div class="alert alert-danger" style="visibility: hidden;">Placeholder</div>
+                {% endif %}
+            </div>
+
+            <div class="form-row">
+                <div class="form-group col-md-4">
+                    <label for="inputDescription">Description</label>
+                    <input type="text" class="form-control" name="description">
+                </div>
+                <div class="form-group col-md-2">
+                    <label for="inputAmount">Amount</label>
+                    <input class="form-control" name="amount">
+                </div>
+                <div class="form-group col-md-2">
+                    <label for="inputCategory">Category</label>
+                    <select name="category" class="form-control">
+                        <option selected>Choose...</option>
+                        {% for category in categories %}
+                        <option value="{{ category }}">{{ category }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="form-group col-md-2">
+                    <label for="due_date">Select Due Date</label>
+                    <input type="date" class="form-control" name="due_date">
+                </div>
+                <div class="form-group col-md-2">
+                    <label for="inputIsRecurring">Recurring?</label>
+                    <select id="is_recurring" name="is_recurring" class="form-control">
+                        <option selected>Choose...</option>
+                        <option value="Yes">Yes</option>
+                        <option value="No">No</option>
+                    </select>
+                </div>
+                <div class="form-group col-md-2">
+                    <label for="inputRecurrencePeriod">Recurrence Period</label>
+                    <select id="recurrence_period" name="recurrence_period" class="form-control">
+                        <option selected>Choose...</option>
+                        {% for period in periods %}
+                            <option value="{{ period }}">{{ period }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+            <button type="submit" class="btn btn-primary">Add Bill</button>
+        </form>
+    </div>
+
+    <br>
+
+    <!-- Current Bills -->
+    <div class="transaction-history">
+        <h4>Current Bills</h4>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th scope="col">Due Date</th>
+                    <th scope="col">Description</th>
+                    <th scope="col">Amount</th>
+                    <th scope="col">Category</th>
+                    <th scope="col">Status</th>
+                    <th scope="col">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for bill in bills %}
+                <tr>
+                    <td>{{ bill.due_date }}</td>
+                    <td>{{ bill.description }}</td>
+                    <td>{{ bill.amount }}</td>
+                    <td>{{ bill.category }}</td>
+                    <td>
+                        <form action="{% url 'paid_bill' bill.id %}" method="POST" style="display:inline;">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-success btn-sm">Paid!</button>
+                        </form>
+                    </td>
+                    <td>
+                        <form action="{% url 'delete_bill' bill.id %}" method="POST"
+                            style="display:inline;">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>    
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'fintrack/bills.js' %}"></script>
+{% endblock %}
