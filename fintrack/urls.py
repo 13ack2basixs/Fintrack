@@ -18,5 +18,6 @@ urlpatterns = [
     path('paid-bill/<int:id>/', views.paid_bill, name='paid_bill'),
     path("get-barchart-data/<str:period>/", views.get_income_expenses_by_period, name="get_barchart_data"),
     path("get-piechart-data/", views.get_income_expenses_by_category, name="get_piechart_data"),
+    path('send_payment/<int:id>/', views.send_payment, name='send_payment'),
 
 ]

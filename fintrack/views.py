@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.contrib.auth import authenticate, login, logout
-from django.http import HttpResponseRedirect, JsonResponse
+from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.urls import reverse
 from django.utils.timezone import now 
 from django.contrib import messages
@@ -10,10 +10,26 @@ from django.db.models import Sum
 from django.db.models.functions import TruncWeek, TruncMonth, TruncYear
 from dateutil.relativedelta import relativedelta
 
-from .utils import convert_to_sgd
+from .utils import convert_to_sgd, create_paypal_payment
 from .models import User, Category, Transaction, Budget, Currency, RecurrencePeriod, Bill
 
 # Create your views here.
+
+def send_payment(request, id):
+    if request.method == 'POST':
+        try:
+            transaction = Transaction.objects.get(id=id)
+            amount = transaction.amount
+
+            return_url = request.build_absolute_uri(f'/transactions?payment_status=success&id={id}')
+            cancel_url = request.build_absolute_uri(f'/transactions?payment_status=cancel&id={id}')
+
+            approval_url = create_paypal_payment(amount, return_url, cancel_url)
+            return HttpResponseRedirect(approval_url)
+        except Transaction.DoesNotExist:
+            return HttpResponse("Transaction not found.")
+        except Exception as e:
+            return HttpResponse(f"Error processing payment: {str(e)}") 
 
 def get_income_expenses_by_period(request, period):
     if period == "weeks":
@@ -224,6 +240,7 @@ def dashboard(request):
     one_week = date.today() + timedelta(days=7)
     bills = Bill.objects.filter(user=request.user, due_date__lte=one_week).order_by("due_date")
     
+    # Add budget spending when new transaction of that budget category is made
     budgets = Budget.objects.filter(user=request.user).order_by("category")
     for transaction in Transaction.objects.filter(is_processed=False):
             # Queryset, not Budget instance
@@ -231,12 +248,10 @@ def dashboard(request):
             if not budget.exists(): # No budget of that category
                 continue
             b = budget.first()
-            print("Before: ", b.category, b.amount_spent)
             b.amount_spent += transaction.amount
             transaction.is_processed = True
             transaction.save()
             b.save()
-            print("After: ", b.category, b.amount_spent)    
     
     # Get the data from sessions
     total_income = request.session.get('total_income', 0)
@@ -384,6 +399,23 @@ def transactions(request):
         request.session['total_income'] = float(total_income)
         request.session['total_expenses'] = float(total_expenses)
 
+        # For sending payments 
+        payment_status = request.GET.get("payment_status", None)
+        id = request.GET.get("id", None)
+        t = Transaction.objects.filter(id=id)
+        if t.exists():
+            t = t.first()
+        if payment_status == 'success':
+            messages.success(
+                request,
+                f"Payment was successful! Date: {t.date}, Description: {t.description}, Amount: {t.amount}"
+            )
+        elif payment_status == 'cancel':
+            messages.warning(
+                request,
+                f"Payment was cancelled. Date: {t.date}, Description: {t.description}, Amount: {t.amount}"
+            )
+
         return render(request, "fintrack/transactions.html", {
             "categories": categories,
             "currencies": currencies,
@@ -391,7 +423,6 @@ def transactions(request):
             "total_income": total_income,
             "total_expenses": total_expenses,
         })
-
 
 def home(request):
     return render(request, "fintrack/home.html", {

@@ -8,13 +8,16 @@
       <form action="{% url 'transactions' %}" method="POST">
         {% csrf_token %}
 
-        <div class="error-placeholder">
+        <!-- Check for empty fields in form -->
+        <div class="error-messages">
           {% if messages %}
-          {% for message in messages %}
-          <div class="alert alert-danger">
-            {{ message }}
-          </div>
-          {% endfor %}
+            {% for message in messages %}
+              {% if message.tags == "error" %}
+                <div class="alert alert-danger">
+                  {{ message }}
+                </div>
+              {% endif %}
+            {% endfor %}
           {% else %}
 
           <!-- Empty container to reserve space -->
@@ -64,6 +67,22 @@
 
     <br>
 
+    <div class="payment-status-messages">
+      {% if messages %}
+        {% for message in messages %}
+          {% if message.tags == "success" or message.tags == "warning" %}
+            <div class="alert alert-{{ message.tags }}">
+              {{ message }}
+            </div>
+          {% endif %}
+        {% endfor %}
+      {% else %}
+    
+      <!-- Empty container to reserve space -->
+      <div class="alert alert-danger" style="visibility: hidden;">Placeholder</div>
+      {% endif %}
+    </div>
+
     <!-- Transaction History and Summary -->
     <div class="transaction-history">
       <h4>Transaction History</h4>
@@ -92,6 +111,12 @@
                 <form action="{% url 'delete_transaction' transaction.id %}" method="POST" style="display:inline;">
                   {% csrf_token %}
                   <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                </form>
+              </td>
+              <td>
+                <form action="{% url 'send_payment' transaction.id %}" method="POST" style="display:inline;">
+                  {% csrf_token %}
+                  <button type="submit" class="btn btn-primary btn-sm">Send Payment</button>
                 </form>
               </td>
             </tr>
