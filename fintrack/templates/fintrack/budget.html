@@ -61,17 +61,17 @@
                     <th scope="col">End Date</th>
                     <th scope="col">Category</th>
                     <th scope="col">Amount</th>
-                    <th scope="col">Action</th>
+                    <th scope="col">Delete</th>
                 </tr>
             </thead>
             <tbody>
                 {% for budget in budgets %}
                 <tr>
-                    <td>{{ budget.start_date }}</td>
-                    <td>{{ budget.end_date }}</td>
-                    <td>{{ budget.category }}</td>
-                    <td>{{ budget.amount }}</td>
-                    <td>
+                    <td data-label="Start Date">{{ budget.start_date }}</td>
+                    <td data-label="End Date">{{ budget.end_date }}</td>
+                    <td data-label="Category">{{ budget.category }}</td>
+                    <td data-label="Amount">{{ budget.amount }}</td>
+                    <td data-label="Delete Budget">
                         <form action="{% url 'delete_budget' budget.id %}" method="POST" style="display:inline;">
                             {% csrf_token %}
                             <button type="submit" class="btn btn-danger btn-sm">Delete</button>

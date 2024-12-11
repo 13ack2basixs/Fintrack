@@ -76,3 +76,18 @@ window.onclick = function(event) {
         }
     }
 }
+
+// Responsive Design 
+function adjustModals() {
+    const modals = document.querySelectorAll('.modal-content');
+    modals.forEach(modal => {
+        if (window.innerWidth < 480) {
+            modal.style.width = '90%';
+        } else {
+            modal.style.width = '500px';
+        }
+    });
+}
+
+window.addEventListener('resize', adjustModals);
+document.addEventListener('DOMContentLoaded', adjustModals);

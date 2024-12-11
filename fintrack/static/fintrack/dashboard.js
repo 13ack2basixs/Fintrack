@@ -12,6 +12,7 @@ function renderIncomeChart(config) {
         },
         options: {
             responsive: true,
+            maintainAspectRatio: true,
             plugins: {
                 legend: {
                     display: true, // Ensure legend is shown

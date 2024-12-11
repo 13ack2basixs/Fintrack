@@ -4,7 +4,7 @@
 {% block body %}
 <div class="container">
     <div class="bills-form"> 
-        <h4>Add Transaction</h4>
+        <h4>Add Bills</h4>
         <form action="{% url 'bills' %}" method="POST">
             {% csrf_token %}
 
@@ -69,7 +69,7 @@
     <br>
 
     <!-- Current Bills -->
-    <div class="transaction-history">
+    <div class="current-bills">
         <h4>Current Bills</h4>
         <table class="table table-striped">
             <thead>
@@ -79,23 +79,23 @@
                     <th scope="col">Amount</th>
                     <th scope="col">Category</th>
                     <th scope="col">Status</th>
-                    <th scope="col">Action</th>
+                    <th scope="col">Delete </th>
                 </tr>
             </thead>
             <tbody>
                 {% for bill in bills %}
                 <tr>
-                    <td>{{ bill.due_date }}</td>
-                    <td>{{ bill.description }}</td>
-                    <td>{{ bill.amount }}</td>
-                    <td>{{ bill.category }}</td>
-                    <td>
+                    <td data-label="Due Date">{{ bill.due_date }}</td>
+                    <td data-label="Description">{{ bill.description }}</td>
+                    <td data-label="Amount">{{ bill.amount }}</td>
+                    <td data-label="Category">{{ bill.category }}</td>
+                    <td data-label="Paid Bill">
                         <form action="{% url 'paid_bill' bill.id %}" method="POST" style="display:inline;">
                             {% csrf_token %}
                             <button type="submit" class="btn btn-success btn-sm">Paid!</button>
                         </form>
                     </td>
-                    <td>
+                    <td data-label="Delete Bill">
                         <form action="{% url 'delete_bill' bill.id %}" method="POST"
                             style="display:inline;">
                             {% csrf_token %}

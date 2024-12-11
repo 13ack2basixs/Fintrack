@@ -153,3 +153,35 @@ header .logo {
 .modal-content button:hover {
     background: #333;
 }
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    header .header-container {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .hero-content h1 {
+        font-size: 2rem;
+    }
+
+    .hero-content p {
+        font-size: 1rem;
+    }
+
+    .auth-buttons {
+        flex-wrap: wrap;
+        gap: 0.5rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .cta-btn {
+        padding: 0.5rem 1rem;
+        font-size: 1rem;
+    }
+
+    .modal-content {
+        width: 90%;
+    }
+}

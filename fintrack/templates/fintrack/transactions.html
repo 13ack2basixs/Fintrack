@@ -95,25 +95,26 @@
             <th scope="col">Type</th>
             <th scope="col">Currency</th>
             <th scope="col">Category</th>
-            <th scope="col">Action</th>
+            <th scope="col">Delete</th>
+            <th scope="col">Send</th>
           </tr>
         </thead>
         <tbody>
           {% for transaction in transactions %}
             <tr>
-              <td>{{ transaction.date }}</td>
-              <td>{{ transaction.description }}</td>
-              <td>{{ transaction.amount }}</td>
-              <td>{{ transaction.type }}</td>
-              <td>{{ transaction.currency }}</td>
-              <td>{{ transaction.category }}</td>
-              <td>
+              <td data-label="Date">{{ transaction.date }}</td>
+              <td data-label="Description">{{ transaction.description }}</td>
+              <td data-label="Amount">{{ transaction.amount }}</td>
+              <td data-label="Type">{{ transaction.type }}</td>
+              <td data-label="Currency">{{ transaction.currency }}</td>
+              <td data-label="Category">{{ transaction.category }}</td>
+              <td data-label="Delete Transaction">
                 <form action="{% url 'delete_transaction' transaction.id %}" method="POST" style="display:inline;">
                   {% csrf_token %}
                   <button type="submit" class="btn btn-danger btn-sm">Delete</button>
                 </form>
               </td>
-              <td>
+              <td data-label="Send Payment">
                 <form action="{% url 'send_payment' transaction.id %}" method="POST" style="display:inline;">
                   {% csrf_token %}
                   <button type="submit" class="btn btn-primary btn-sm">Send Payment</button>

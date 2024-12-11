@@ -287,15 +287,15 @@ def budget(request):
         start_date = request.POST["startdate"]
         end_date = request.POST["enddate"]
 
+        # Check for empty fields
+        if not all([amount, category, start_date, end_date]):
+            messages.error(request, "Please fill out all fields.")
+            return HttpResponseRedirect(reverse("budget"))
+
         # Check for duplicates of budgets of same category
         cat = Category.objects.get(name=category)
         if Budget.objects.filter(category=cat).exists():
             messages.error(request, "Only one budget for each category is allowed.")
-            return HttpResponseRedirect(reverse("budget"))
-
-        # Check for empty fields
-        if not all([amount, category, start_date, end_date]):
-            messages.error(request, "Please fill out all fields.")
             return HttpResponseRedirect(reverse("budget"))
 
         # Get the respective category from the class
