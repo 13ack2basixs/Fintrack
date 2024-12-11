@@ -91,27 +91,6 @@ header {
     box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 
-.dashboard-card {
-    margin-bottom: 20px;
-    background: #fff;
-    border-radius: 10px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-}
-
-.dashboard-card .card-body {
-    text-align: center;
-}
-
-.dashboard-card .card-title {
-    font-size: 1.25rem;
-    font-weight: bold;
-}
-
-.dashboard-card .card-text {
-    font-size: 1.5rem;
-    color: #4e54c8;
-}
-
 .upcoming-bills .existing-budgets {
     font-size: 20px;
 }

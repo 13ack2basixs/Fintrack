@@ -254,8 +254,13 @@ def dashboard(request):
             b.save()
     
     # Get the data from sessions
-    total_income = request.session.get('total_income', 0)
-    total_expenses = request.session.get('total_expenses', 0)
+    ts = Transaction.objects.filter(user=request.user).order_by("-date")
+    total_income, total_expenses = 0, 0  
+    for t in ts:
+        if t.type == 'Income':
+            total_income += t.amount
+        else:
+            total_expenses += t.amount
     balance = total_income - total_expenses
 
     return render(request, "fintrack/dashboard.html", {
@@ -375,7 +380,7 @@ def transactions(request):
 
                 # Compare total expenses with the budget
                 if total_expenses > budget.amount:
-                    messages.warning(
+                    messages.error(
                         request,
                         f"You have exceeded your budget for {category_model.name}! "
                         f"Budget: {budget.amount}, Total Expenses: {total_expenses:.2f}"
@@ -386,18 +391,6 @@ def transactions(request):
         categories = Category.objects.all().order_by("name")
         currencies = Currency.objects.all().order_by("symbol")
         transactions = Transaction.objects.filter(user=request.user).order_by("-date")
-
-        # Total Income/Expenses
-        total_income, total_expenses = 0, 0  
-        for transaction in transactions:
-            if transaction.type == 'Income':
-                total_income += transaction.amount
-            else:
-                total_expenses += transaction.amount
-        
-        # Store totals in the session to access them in other views
-        request.session['total_income'] = float(total_income)
-        request.session['total_expenses'] = float(total_expenses)
 
         # For sending payments 
         payment_status = request.GET.get("payment_status", None)
@@ -420,8 +413,6 @@ def transactions(request):
             "categories": categories,
             "currencies": currencies,
             "transactions": transactions,
-            "total_income": total_income,
-            "total_expenses": total_expenses,
         })
 
 def home(request):
@@ -445,7 +436,7 @@ def login_view(request):
         # Check if authentication successful
         if user is not None:
             login(request, user)
-            return JsonResponse({'success': True, 'redirect_url': reverse('home')})
+            return JsonResponse({'success': True, 'redirect_url': reverse('dashboard')})
         else:
             return JsonResponse({'success': False, 'error': 'Invalid Credentials'})
     else:
