@@ -351,6 +351,9 @@ def transactions(request):
             return HttpResponseRedirect(reverse("transactions"))
         
         # Get category from the class
+        if category == 'Choose...':
+            messages.error(request, "Please choose a category")
+            return HttpResponseRedirect(reverse("transactions"))
         category_model = Category.objects.get(name = category)
 
         # Convert currency to SGD
