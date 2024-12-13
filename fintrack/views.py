@@ -9,6 +9,7 @@ from datetime import date, timedelta
 from django.db.models import Sum
 from django.db.models.functions import TruncWeek, TruncMonth, TruncYear
 from dateutil.relativedelta import relativedelta
+from django.contrib.auth.decorators import login_required
 
 from .utils import convert_to_sgd, create_paypal_payment
 from .models import User, Category, Transaction, Budget, Currency, RecurrencePeriod, Bill
@@ -207,12 +208,12 @@ def bills(request):
         recurrence_period = request.POST["recurrence_period"] if is_recurring else None
         
         # Check if required fields are missing or bill is recurring but recurrence_period empty 
+        recurrence_period_model = None
         if is_recurring:
             if recurrence_period == 'Choose...':
-                messages.error(request, "Please select a recurrence period")
+                messages.error(request, "Please select a recurrence period.")
                 return HttpResponseRedirect(reverse("bills"))
-        
-        recurrence_period_model = RecurrencePeriod.objects.get(name = recurrence_period)
+            recurrence_period_model = RecurrencePeriod.objects.get(name=recurrence_period)
 
         newBill = Bill(
             user = request.user,
@@ -236,7 +237,11 @@ def bills(request):
                 "periods": periods
             })
 
+@login_required
 def dashboard(request):
+    if not request.user.is_authenticated:
+        return HttpResponseRedirect(reverse("login"))
+    
     one_week = date.today() + timedelta(days=7)
     bills = Bill.objects.filter(user=request.user, due_date__lte=one_week).order_by("due_date")
     
@@ -430,8 +435,8 @@ def login_view(request):
         username = request.POST["username"]
         password = request.POST["password"]
         user = authenticate(request, username=username, password=password)
-        print(password)
-        print(user)
+        # print(password)
+        # print(user)
 
         # Check if authentication successful
         if user is not None:
