@@ -147,6 +147,8 @@ def paid_bill(request, id):
                 new_due_date = current_bill.due_date + relativedelta(months=1)
             elif current_bill.recurrence_period.name == "Quarterly":
                 new_due_date = current_bill.due_date + relativedelta(months=3)
+            elif current_bill.recurrence_period.name == 'Biannually':
+                new_due_date = current_bill.due_date + relativedelta(months=6)
             else:
                 new_due_date = current_bill.due_date + relativedelta(years=1)
 
