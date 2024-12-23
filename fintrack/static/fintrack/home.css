@@ -249,13 +249,13 @@ header {
         height: auto;
     }
 
-    .logo {
+    .header-container .logo {
         font-size: 1.1rem;
         text-align: left;
         flex: 1;
     }
 
-    .welcome-message {
+    .header-container .welcome-message {
         font-size: 0.9rem;
         text-align: right;
         flex: 1;
@@ -310,13 +310,13 @@ header {
         padding: 5px;
     }
 
-    .logo {
-        font-size: 0.9rem;
+    .header-container .logo {
+        font-size: 0.7rem;
         text-align: left;
     }
 
-    .welcome-message {
-        font-size: 0.7rem;
+    .header-container .welcome-message {
+        font-size: 0.6rem;
         text-align: right;
     }
 
@@ -327,7 +327,7 @@ header {
     }
 
     .navbar .btn {
-        font-size: 0.8rem;
+        font-size: 0.6rem;
         padding: 0.3rem 0.6rem;
     }
 
