@@ -136,6 +136,7 @@ def paid_bill(request, id):
                 description = current_bill.description,
                 type = "Expense",
                 category = Category.objects.get(name="Bills"),
+                date = date.today(),
                 currency = "SGD" 
             )
             newTransaction.save()
@@ -169,6 +170,7 @@ def paid_bill(request, id):
                 description = current_bill.description,
                 type = "Expense",
                 category = Category.objects.get(name="Bills"),
+                date = date.today(),
                 currency = "SGD" 
             )
             newTransaction.save()
