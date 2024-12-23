@@ -341,6 +341,7 @@ def delete_transaction(request, id):
 
 def transactions(request):
     if request.method == 'POST':
+        date = request.POST["transactionDate"]
         description = request.POST["description"]
         amount = request.POST["amount"]
         currency = request.POST["currency"]
@@ -348,7 +349,7 @@ def transactions(request):
         type = request.POST["type"]
 
         # Check for empty fields
-        if not all([description, amount, currency, category, type]):
+        if not all([date, description, amount, currency, category, type]):
             messages.error(request, "Please fill out all fields.")
             return HttpResponseRedirect(reverse("transactions"))
         
@@ -371,6 +372,7 @@ def transactions(request):
             description = description,
             type = type,
             category = category_model,
+            date = date,
             currency = "SGD"
         )
         newTransaction.save()

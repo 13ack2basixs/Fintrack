@@ -30,7 +30,7 @@ class Transaction(models.Model):
     description = models.CharField(max_length=255)
     type = models.CharField(max_length=20, choices=CHOICES)
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
-    date = models.DateField(auto_now_add=True)
+    date = models.DateField()
     currency = models.CharField(max_length=3)
     is_processed = models.BooleanField(default=False)
 
@@ -54,7 +54,13 @@ class Budget(models.Model):
         return f'{self.user} has a budget of {self.amount} on {self.category}'
 
 class RecurrencePeriod(models.Model):
-    name = models.CharField(max_length=50)
+    CHOICES = [
+        ('Monthly', 'Monthly'),
+        ('Quarterly', 'Quarterly'),
+        ('Biannually', 'Biannually'),
+        ('Annually', 'Annually')
+    ]
+    name = models.CharField(max_length=50, choices=CHOICES)
 
     def __str__(self):
         return self.name
