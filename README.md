@@ -47,5 +47,4 @@ Record transactions in any currency — Fintrack will convert them to SGD for co
 
 ## 🌐 Usage
 
-Create an account and start exploring!
-🔗 Live Demo: [http://54.179.109.136:8000/](http://54.179.109.136:8000/)
+To use Fintrack, click [here](http://54.179.109.136:8000/) and start exploring!
